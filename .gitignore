@@ -1,0 +1,54 @@
+# Environment
+venv/
+.venv/
+env/
+.env/
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+dist-ssr/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# IDE
+.vscode/
+.idea/
+
+# Datasets
+*.csv
+*.xlsx
+*.pkl
+*.h5
+*.joblib
+
+# Large Model Files (Unless small enough)
+# xgb_genomic_model.json is usually ~20-50MB, but let's keep it if small
+# !xgb_genomic_model.json 
+
+# Ignore all JSON except critical configs
+*.json
+!package.json
+!tsconfig.json
+!model_features.json
+!xgb_genomic_model.json
