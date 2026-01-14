@@ -99,7 +99,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="page-analysis">
       <div class="dashboard-bg-deco" style="border-color: var(--neon-green);"></div>
       <header class="dashboard-header">
-        <div class="logo">DRUG DISCOVERY <span style="color:var(--neon-green)">ANALYTICS</span></div>
+        <div class="logo" style="font-weight: bold; font-size: 1.8rem; letter-spacing: 3px; color: var(--secondary-teal); text-shadow: 0 0 5px var(--neon-green);">DRUG DISCOVERY ANALYTICS</div>
         <button id="back-dashboard" class="btn-logout">BACK</button>
       </header>
       
