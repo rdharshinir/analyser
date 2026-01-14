@@ -6,6 +6,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer
 import { api } from './api';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  <div id="dna-background"></div>
   <div class="hex-bg"></div>
   <div class="glow-overlay"></div>
   
@@ -22,11 +23,20 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="scan-glow" id="scan-glow"></div>
   <div class="static-noise" id="static-noise"></div>
   
+  <div class="curzr-arrow-pointer" hidden>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+      <path class="inner"
+        d="M25,30a5.82,5.82,0,0,1-1.09-.17l-.2-.07-7.36-3.48a.72.72,0,0,0-.35-.08.78.78,0,0,0-.33.07L8.24,29.54a.66.66,0,0,1-.2.06,5.17,5.17,0,0,1-1,.15,3.6,3.6,0,0,1-3.29-5L12.68,4.2a3.59,3.59,0,0,1,6.58,0l9,20.74A3.6,3.6,0,0,1,25,30Z" />
+      <path class="outer"
+        d="M16,3A2.59,2.59,0,0,1,18.34,4.6l9,20.74A2.59,2.59,0,0,1,25,29a5.42,5.42,0,0,1-.86-.15l-7.37-3.48a1.84,1.84,0,0,0-.77-.17,1.69,1.69,0,0,0-.73.16l-7.4,3.31a5.89,5.89,0,0,1-.79.12,2.59,2.59,0,0,1-2.37-3.62L13.6,4.6A2.58,2.58,0,0,1,16,3m0-2h0A4.58,4.58,0,0,0,11.76,3.8L2.84,24.33A4.58,4.58,0,0,0,7,30.75a6.08,6.08,0,0,0,1.21-.17,1.87,1.87,0,0,0,.4-.13L16,27.18l7.29,3.44a1.64,1.64,0,0,0,.39.14A6.37,6.37,0,0,0,25,31a4.59,4.59,0,0,0,4.21-6.41l-9-20.75A4.62,4.62,0,0,0,16,1Z" />
+    </svg>
+  </div>
+  
   <div class="page-login">
     <div class="login-card">
       <div class="login-card-corner-br"></div>
-      <h1>HOSPIT-X</h1>
-      <h2>SECURE DOCTOR PORTAL</h2>
+      <h1 style="color:var(--secondary-teal)">GeneRX</h1>
+      <h2 style="color:var(--primary-teal)">HOSPITAL SYSTEM</h2>
       
       <div class="input-group">
         <label>DOCTOR ID</label>
@@ -45,8 +55,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div class="page-dashboard">
     <div class="dashboard-bg-deco"></div>
     <header class="dashboard-header">
-      <div class="logo" style="font-size: 1.5rem; letter-spacing: 2px;">
-        HOSPIT-X <span style="color:var(--neon-blue); font-size: 0.8em; border: 1px solid var(--neon-blue); padding: 2px 5px;">SYS.ADMIN</span>
+      <div class="logo" style="font-size: 1.5rem; letter-spacing: 2px; color: var(--secondary-teal); font-weight: 800;">
+        GeneRX <span style="color:var(--primary-teal); font-size: 0.8em; border: 1px solid var(--primary-teal); padding: 2px 5px;">HOSPITAL</span>
       </div>
       <div class="user-status" style="font-family: 'Orbitron'; display: flex; align-items: center; gap: 15px;">
         <div class="system-status" style="font-size: 0.7rem; display: flex; align-items: center; gap: 5px;" aria-live="polite">
@@ -58,33 +68,28 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       </div>
     </header>
     
-    <div class="grid-container">
+    <div class="grid-container" style="display: flex; justify-content: center; align-items: center; position: relative;">
       
-      <!-- DNA VISUALIZER (Main View) -->
-      <div class="panel center-view" style="padding:0; overflow:hidden; position: relative;" role="region" aria-label="Genomic Visualizer">
-        <h3 style="position: absolute; top: 1rem; left: 1rem; z-index: 2; text-shadow: 0 0 5px black;">GENOMIC SEQUENCE VISUALIZER</h3>
-        <div style="position: absolute; top: 1rem; right: 1rem; z-index: 2; display: flex; gap: 5px;">
-           <input type="text" id="dna-search" placeholder="SEARCH SEQ (e.g. ATGC)" style="font-size: 0.7rem; padding: 5px; width: 150px; border-radius: 0; background: var(--glass); border: 1px solid var(--neon-blue);" aria-label="Search genomic sequence">
-           <button id="btn-search-dna" class="btn-logout" style="margin:0; padding: 5px 10px;" aria-label="Execute DNA search">FIND</button>
-           <button id="btn-reset-dna" class="btn-logout" style="margin:0; padding: 5px 10px;" aria-label="Reset DNA view">RESET</button>
-        </div>
-        <div id="dna-canvas-container" style="width: 100%; height: 100%;"></div>
-      </div>
-      
+      <!-- RIGHT SIDE: PATIENT HUD -->
       <div class="panel right-hud" role="region" aria-label="Patient Report Entry">
-        <h3>PATIENT REPORT ENTRY</h3>
+        <div style="text-align: center; margin-bottom: 1.5rem;">
+          <h1 style="font-family: 'Orbitron'; color: var(--secondary-teal); font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 0;">GENOMIC SEQUENCE</h1>
+          <h2 style="font-family: 'Orbitron'; color: var(--primary-teal); font-size: 1.2rem; letter-spacing: 8px; margin-top: 0; border-bottom: 2px solid var(--primary-teal); padding-bottom: 10px; display: inline-block;">VISUALIZER</h2>
+        </div>
+        <h3 style="color:var(--secondary-teal); font-family: 'Orbitron';">PATIENT REPORT ENTRY</h3>
          <div class="report-form-container">
-            <input type="text" class="report-input" placeholder="PATIENT NAME" id="p-name" aria-label="Patient Name">
-            <input type="text" class="report-input" placeholder="AGE / GENDER" id="p-age" aria-label="Age and Gender">
-            <input type="text" class="report-input" placeholder="BLOOD GROUP" id="p-blood" aria-label="Blood Group">
-            <input type="text" class="report-input" placeholder="DISEASE/CONDITION" id="p-disease" aria-label="Disease or Condition">
-            <textarea class="report-input" placeholder="DIAGNOSIS NOTES" rows="3" id="p-diagnosis" aria-label="Diagnosis Notes"></textarea>
-            <button class="btn-submit" id="submit-report" aria-label="Upload report to backend">UPLOAD TO BACKEND</button>
+            <input type="text" class="report-input" placeholder="PATIENT NAME" id="p-name" aria-label="Patient Name" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
+            <input type="text" class="report-input" placeholder="AGE / GENDER" id="p-age" aria-label="Age and Gender" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
+            <input type="text" class="report-input" placeholder="BLOOD GROUP" id="p-blood" aria-label="Blood Group" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
+            <input type="text" class="report-input" placeholder="DISEASE/CONDITION" id="p-disease" aria-label="Disease or Condition" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
+            <textarea class="report-input" placeholder="DIAGNOSIS NOTES" rows="4" id="p-diagnosis" aria-label="Diagnosis Notes" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);"></textarea>
+            <button class="btn-submit" id="submit-report" aria-label="Upload report to backend" style="background: var(--primary-teal);">UPLOAD TO BACKEND</button>
          </div>
-         <div style="flex-grow: 1; margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.5rem;">
-            <div style="font-size: 0.8rem; color: var(--neon-purple); margin-bottom: 0.5rem;">SYS LOGS:</div>
-            <ul id="console-logs" style="list-style: none; padding: 0; font-size: 0.7rem; color: #888; overflow-y: auto; height: 100px; font-family: 'monospace';">
-              <li>[SYS] Standing by...</li>
+         <div style="flex-grow: 1; margin-top: 1.5rem; border-top: 1px solid rgba(4, 53, 61, 0.1); padding-top: 1rem;">
+            <div style="font-size: 0.8rem; color: var(--secondary-teal); margin-bottom: 0.5rem; font-weight: bold;">[SYSTEM LOGS]</div>
+            <ul id="console-logs" style="list-style: none; padding: 0; font-size: 0.75rem; color: var(--text-muted); overflow-y: auto; height: 120px; font-family: 'monospace';">
+              <li>[SYS] Initializing hospital systems...</li>
+              <li>[SYS] Standing by for patient data...</li>
             </ul>
          </div>
       </div>
@@ -445,22 +450,22 @@ function addLog(msg: string) {
 
 // Three.js DNA Setup - Modern Cinematic Glass & Neon with Precision Pins
 function initDNA() {
-  const container = document.getElementById('dna-canvas-container');
+  const container = document.getElementById('dna-background');
   if (!container) return;
 
   container.innerHTML = '';
 
   // Scene
   dnaScene = new THREE.Scene();
-  dnaScene.fog = new THREE.FogExp2(0x020408, 0.02);
+  dnaScene.fog = new THREE.FogExp2(0xE3E6E9, 0.015);
 
-  // Camera
-  dnaCamera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
-  dnaCamera.position.set(0, 0, 45);
+  // Camera - Fixed position to focus on the side DNA
+  dnaCamera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
+  dnaCamera.position.set(0, 0, 40);
 
   // Renderer (WebGL)
   dnaRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  dnaRenderer.setSize(container.clientWidth, container.clientHeight);
+  dnaRenderer.setSize(window.innerWidth, window.innerHeight);
   dnaRenderer.setPixelRatio(window.devicePixelRatio);
   dnaRenderer.toneMapping = THREE.ACESFilmicToneMapping;
   dnaRenderer.toneMappingExposure = 1.2;
@@ -468,7 +473,7 @@ function initDNA() {
 
   // Renderer (CSS2D - For Labels)
   labelRenderer = new CSS2DRenderer();
-  labelRenderer.setSize(container.clientWidth, container.clientHeight);
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
   labelRenderer.domElement.style.position = 'absolute';
   labelRenderer.domElement.style.top = '0px';
   labelRenderer.domElement.style.pointerEvents = 'none';
@@ -483,48 +488,51 @@ function initDNA() {
   controls.autoRotateSpeed = 1.0;
 
   // Lighting
-  const ambientLight = new THREE.AmbientLight(0x404040, 2);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
   dnaScene.add(ambientLight);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-  dirLight.position.set(10, 20, 10);
+  const dirLight = new THREE.DirectionalLight(0x5AC5C8, 3);
+  dirLight.position.set(20, 30, 20);
   dnaScene.add(dirLight);
 
-  const blueSpot = new THREE.PointLight(0x0088ff, 5, 50);
-  blueSpot.position.set(-20, 10, 20);
-  dnaScene.add(blueSpot);
+  const tealSpot = new THREE.PointLight(0x5AC5C8, 10, 50);
+  tealSpot.position.set(-20, 10, 20);
+  dnaScene.add(tealSpot);
 
-  const orangeSpot = new THREE.PointLight(0xff8800, 5, 50);
-  orangeSpot.position.set(20, -10, 20);
-  dnaScene.add(orangeSpot);
+  const darkSpot = new THREE.PointLight(0x04353D, 10, 50);
+  darkSpot.position.set(20, -10, 20);
+  dnaScene.add(darkSpot);
 
   const dnaGroup = new THREE.Group();
+  dnaGroup.position.x = 15; // Shift DNA to the RIGHT as per image 0
   dnaScene.add(dnaGroup);
 
   // Materials
   const backboneMaterial = new THREE.MeshPhysicalMaterial({
-    color: 0x88ccff,
-    metalness: 0.1,
+    color: 0xE0F7FA, // Very light blue / white
+    metalness: 0.2,
     roughness: 0.1,
-    transmission: 0.9,
-    thickness: 1.5,
+    transmission: 0.8,
+    thickness: 1.0,
     clearcoat: 1.0,
-    opacity: 0.8,
+    opacity: 0.6,
     transparent: true,
+    emissive: 0x81D4FA, // Light sky blue glow
+    emissiveIntensity: 0.5,
     side: THREE.DoubleSide
   });
 
-  // Materials for 4 Bases
-  const matAdenine = new THREE.MeshStandardMaterial({ color: 0x00f3ff, emissive: 0x00f3ff, emissiveIntensity: 2, roughness: 0.2, metalness: 0.8 }); // Cyan
-  const matThymine = new THREE.MeshStandardMaterial({ color: 0xff8800, emissive: 0xff8800, emissiveIntensity: 2, roughness: 0.2, metalness: 0.8 }); // Orange
-  const matGuanine = new THREE.MeshStandardMaterial({ color: 0x0aff0a, emissive: 0x0aff0a, emissiveIntensity: 2, roughness: 0.2, metalness: 0.8 }); // Green
-  const matCytosine = new THREE.MeshStandardMaterial({ color: 0xff00ff, emissive: 0xff00ff, emissiveIntensity: 2, roughness: 0.2, metalness: 0.8 }); // Purple
+  // Materials for 4 Bases (Themed) - Lighter for Image 0 style
+  const matAdenine = new THREE.MeshStandardMaterial({ color: 0x4FC3F7, emissive: 0x4FC3F7, emissiveIntensity: 1.0, roughness: 0.2, metalness: 0.5 });
+  const matThymine = new THREE.MeshStandardMaterial({ color: 0x37474F, emissive: 0x37474F, emissiveIntensity: 0.5, roughness: 0.2, metalness: 0.5 });
+  const matGuanine = new THREE.MeshStandardMaterial({ color: 0xB0BEC5, emissive: 0xB0BEC5, emissiveIntensity: 0.8, roughness: 0.2, metalness: 0.5 });
+  const matCytosine = new THREE.MeshStandardMaterial({ color: 0x81D4FA, emissive: 0x81D4FA, emissiveIntensity: 1.2, roughness: 0.2, metalness: 0.5 });
 
-  // Geometry Generation
-  const pointCount = 100;
-  const radius = 6;
-  const height = 45;
-  const turns = 3;
+  // Geometry Generation - THINNER DNA
+  const pointCount = 150;
+  const radius = 6; /* Thinner DNA */
+  const height = 50;
+  const turns = 4;
 
   const pointsA = [];
   const pointsB = [];
@@ -546,8 +554,8 @@ function initDNA() {
   const curveA = new THREE.CatmullRomCurve3(pointsA);
   const curveB = new THREE.CatmullRomCurve3(pointsB);
 
-  const tubeGeoA = new THREE.TubeGeometry(curveA, 128, 0.4, 16, false);
-  const tubeGeoB = new THREE.TubeGeometry(curveB, 128, 0.4, 16, false);
+  const tubeGeoA = new THREE.TubeGeometry(curveA, 128, 0.3, 16, false); /* Thinner strands */
+  const tubeGeoB = new THREE.TubeGeometry(curveB, 128, 0.3, 16, false);
 
   const strandA = new THREE.Mesh(tubeGeoA, backboneMaterial);
   const strandB = new THREE.Mesh(tubeGeoB, backboneMaterial);
@@ -621,12 +629,12 @@ function initDNA() {
 
     if (pairType === 0 || pairType === 3) {
       // A-T Pair
-      mat1 = matAdenine; col1 = '#00f3ff'; type1 = 'A';
-      mat2 = matThymine; col2 = '#ff8800'; type2 = 'T';
+      mat1 = matAdenine; col1 = '#5AC5C8'; type1 = 'DNA';
+      mat2 = matThymine; col2 = '#04353D'; type2 = 'DNA';
     } else {
       // G-C Pair
-      mat1 = matGuanine; col1 = '#0aff0a'; type1 = 'G';
-      mat2 = matCytosine; col2 = '#ff00ff'; type2 = 'C';
+      mat1 = matGuanine; col1 = '#E3E6E9'; type1 = 'DNA';
+      mat2 = matCytosine; col2 = '#5AC5C8'; type2 = 'DNA';
     }
 
     // Rungs
@@ -653,29 +661,10 @@ function initDNA() {
     s2.position.copy(ptB);
     dnaGroup.add(s2);
 
-    // Labels
-    // Spread them out vertically
-    if (type1 === 'A' && !labeledA && i > 5) {
-      dnaGroup.add(createRadialPinLabel("Adenine (A)", r1.position, col1));
-      labeledA = true;
-    }
-    if (type2 === 'T' && !labeledT && i > 8) {
-      dnaGroup.add(createRadialPinLabel("Thymine (T)", r2.position, col2));
-      labeledT = true;
-    }
-    if (type1 === 'G' && !labeledG && i > 15) {
-      dnaGroup.add(createRadialPinLabel("Guanine (G)", r1.position, col1));
-      labeledG = true;
-    }
-    if (type2 === 'C' && !labeledC && i > 20) {
-      dnaGroup.add(createRadialPinLabel("Cytosine (C)", r2.position, col2));
-      labeledC = true;
-    }
+    // Labels REMOVED for clean side view
   }
 
-  // Backbone Label
-  const bbPoint = curveA.getPoint(0.9);
-  dnaGroup.add(createRadialPinLabel("Sugar-Phosphate<br>Backbone", bbPoint, "#88ccff"));
+  // Backbone Label - REMOVED for clean side view
 
   // Particles
   const pCount = 300;
@@ -714,9 +703,9 @@ function initDNA() {
   animate();
 
   const handleResize = () => {
-    if (!container || !dnaCamera) return;
-    const w = container.clientWidth;
-    const h = container.clientHeight;
+    if (!dnaCamera || !dnaRenderer || !labelRenderer) return;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
     dnaCamera.aspect = w / h;
     dnaCamera.updateProjectionMatrix();
     dnaRenderer.setSize(w, h);
@@ -774,7 +763,7 @@ if (connectBtn) {
       opacity: 0,
       duration: 0.2,
       onComplete: () => {
-        initDNA(); // Start 3D
+        // initDNA(); // Already initialized as background
       }
     }, "-=0.2");
 
@@ -822,10 +811,10 @@ if (connectBtn) {
     tl.from('.panel', {
       y: 100,
       opacity: 0,
-      stagger: 0.2,
       duration: 0.8,
-      ease: "power4.out"
-    }, "-=0.5");
+      stagger: 0.2,
+      ease: "power3.out"
+    });
 
     setTimeout(() => addLog("Authenticating Credentials..."), 2000);
     setTimeout(() => addLog("Establish Secure Link..."), 3000);
@@ -1360,7 +1349,7 @@ document.addEventListener('click', (e) => {
   const target = e.target as HTMLElement;
   if (target && target.id === 'btn-reset-dna') {
     if (dnaCamera) {
-      gsap.to(dnaCamera.position, { x: 0, y: 0, z: 45, duration: 1, ease: "power2.inOut" });
+      gsap.to(dnaCamera.position, { x: 100, y: 0, z: 50, duration: 1, ease: "power2.inOut" });
       addLog("Genomic camera re-centered.");
     }
   }
@@ -1387,4 +1376,140 @@ document.addEventListener('click', (e) => {
   }
 });
 // Entry point for H-X System
-// End of file
+initDNA();
+
+// ========== CURSOR INTEGRATION ==========
+
+class ArrowPointer {
+  root: HTMLElement;
+  cursor: HTMLElement;
+  position: {
+    distanceX: number;
+    distanceY: number;
+    distance: number;
+    pointerX: number;
+    pointerY: number;
+  };
+  previousPointerX: number = 0;
+  previousPointerY: number = 0;
+  angle: number = 0;
+  previousAngle: number = 0;
+  angleDisplace: number = 0;
+  degrees: number = 57.296;
+  cursorSize: number = 20;
+
+  constructor() {
+    this.root = document.body;
+    this.cursor = document.querySelector(".curzr-arrow-pointer") as HTMLElement;
+
+    this.position = {
+      distanceX: 0,
+      distanceY: 0,
+      distance: 0,
+      pointerX: 0,
+      pointerY: 0,
+    };
+
+    const cursorStyle: Partial<CSSStyleDeclaration> = {
+      boxSizing: 'border-box',
+      position: 'fixed',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      zIndex: '2147483647',
+      width: `${this.cursorSize}px`,
+      height: `${this.cursorSize}px`,
+      transition: '250ms, transform 100ms',
+      userSelect: 'none',
+      pointerEvents: 'none'
+    };
+
+    this.init(this.cursor, cursorStyle);
+  }
+
+  init(el: HTMLElement, style: Partial<CSSStyleDeclaration>) {
+    Object.assign(el.style, style);
+    setTimeout(() => {
+      this.cursor.removeAttribute("hidden");
+    }, 500);
+    this.cursor.style.opacity = '1';
+  }
+
+  move(event: MouseEvent) {
+    this.previousPointerX = this.position.pointerX;
+    this.previousPointerY = this.position.pointerY;
+    this.position.pointerX = event.clientX;
+    this.position.pointerY = event.clientY;
+    this.position.distanceX = this.previousPointerX - this.position.pointerX;
+    this.position.distanceY = this.previousPointerY - this.position.pointerY;
+    this.position.distance = Math.sqrt(this.position.distanceY ** 2 + this.position.distanceX ** 2);
+
+    this.cursor.style.transform = `translate3d(${this.position.pointerX}px, ${this.position.pointerY}px, 0)`;
+
+    if (this.position.distance > 1) {
+      this.rotate(this.position);
+    } else {
+      this.cursor.style.transform += ` rotate(${this.angleDisplace}deg)`;
+    }
+  }
+
+  rotate(position: { distanceX: number; distanceY: number }) {
+    let unsortedAngle = Math.atan(Math.abs(position.distanceY) / Math.abs(position.distanceX)) * this.degrees;
+    const style = this.cursor.style;
+    this.previousAngle = this.angle;
+
+    if (position.distanceX <= 0 && position.distanceY >= 0) {
+      this.angle = 90 - unsortedAngle + 0;
+    } else if (position.distanceX < 0 && position.distanceY < 0) {
+      this.angle = unsortedAngle + 90;
+    } else if (position.distanceX >= 0 && position.distanceY <= 0) {
+      this.angle = 90 - unsortedAngle + 180;
+    } else if (position.distanceX > 0 && position.distanceY > 0) {
+      this.angle = unsortedAngle + 270;
+    }
+
+    if (isNaN(this.angle)) {
+      this.angle = this.previousAngle;
+    } else {
+      if (this.angle - this.previousAngle <= -270) {
+        this.angleDisplace += 360 + this.angle - this.previousAngle;
+      } else if (this.angle - this.previousAngle >= 270) {
+        this.angleDisplace += this.angle - this.previousAngle - 360;
+      } else {
+        this.angleDisplace += this.angle - this.previousAngle;
+      }
+    }
+    style.left = `${-this.cursorSize / 2}px`;
+    style.top = `${0}px`;
+    style.transform += ` rotate(${this.angleDisplace}deg)`;
+  }
+
+  click() {
+    this.cursor.style.transform += ` scale(0.75)`;
+    setTimeout(() => {
+      this.cursor.style.transform = this.cursor.style.transform.replace(` scale(0.75)`, '');
+    }, 35);
+  }
+
+  hidden() {
+    this.cursor.style.opacity = '0';
+    setTimeout(() => {
+      this.cursor.setAttribute("hidden", "hidden");
+    }, 500);
+  }
+}
+
+let curzr: ArrowPointer | null = null;
+document.addEventListener('DOMContentLoaded', () => {
+  curzr = new ArrowPointer();
+  window.addEventListener('mousemove', (e) => curzr?.move(e));
+  window.addEventListener('mousedown', () => curzr?.click());
+});
+// Fallback if DOMContentLoaded already fired
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  if (!curzr) {
+    curzr = new ArrowPointer();
+    window.addEventListener('mousemove', (e) => curzr?.move(e));
+    window.addEventListener('mousedown', () => curzr?.click());
+  }
+}
