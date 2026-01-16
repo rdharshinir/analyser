@@ -1,9 +1,10 @@
 export const API_BASE = 'http://localhost:5000/api';
 
 export const api = {
-    async analyzeGenome(file: File) {
+    async analyzeGenome(file: File, disease: string = '') {
         const formData = new FormData();
         formData.append('file', file);
+        formData.append('disease', disease);
 
         try {
             const response = await fetch(`${API_BASE}/analyze-genome`, {
