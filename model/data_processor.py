@@ -15,8 +15,10 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class DrugResponseDataProcessor:
-    def __init__(self, data_dir="../data"):
-        self.data_dir = data_dir
+    def __init__(self, data_dir=None):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        default_dir = os.path.normpath(os.path.join(base_dir, "..", "data"))
+        self.data_dir = data_dir if data_dir else default_dir
         self.scaler = StandardScaler()
         self.gene_features = []
         self.drug_features = []

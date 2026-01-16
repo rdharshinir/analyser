@@ -76,7 +76,14 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <h1 style="font-family: 'Orbitron'; color: var(--secondary-teal); font-size: 1.5rem; letter-spacing: 4px; margin-bottom: 0;">GENOMIC SEQUENCE</h1>
           <h2 style="font-family: 'Orbitron'; color: var(--primary-teal); font-size: 1.2rem; letter-spacing: 8px; margin-top: 0; border-bottom: 2px solid var(--primary-teal); padding-bottom: 10px; display: inline-block;">VISUALIZER</h2>
         </div>
-        <h3 style="color:var(--secondary-teal); font-family: 'Orbitron';">PATIENT REPORT ENTRY</h3>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <h3 style="color:var(--secondary-teal); font-family: 'Orbitron'; margin:0;">PATIENT REPORT ENTRY</h3>
+          <button id="voice-all-btn" class="voice-btn" aria-label="Voice input for all fields" title="Voice input">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
+            </svg>
+          </button>
+        </div>
          <div class="report-form-container">
             <input type="text" class="report-input" placeholder="PATIENT NAME" id="p-name" aria-label="Patient Name" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
             <input type="text" class="report-input" placeholder="AGE / GENDER" id="p-age" aria-label="Age and Gender" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
@@ -118,11 +125,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
               <h3>PREDICTION RESULTS & GRAPHS</h3>
               <div class="graph-container" id="results-graph">
                   <!-- Bars inserted here -->
-                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #555;" id="graph-placeholder">AWAITING INPUT...</div>
+                  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--secondary-teal);" id="graph-placeholder">AWAITING INPUT...</div>
               </div>
               <div class="result-card" style="margin-top: 1rem; opacity: 0;" id="text-result">
                   <div id="result-status" style="color: var(--neon-green); font-size: 1.2rem; margin-bottom: 5px;">SUCCESS: POTENTIAL CANDIDATE FOUND</div>
-                  <div style="font-size: 0.9rem; color: #ccc;">Binding Affinity: <span id="res-affinity" style="color: white; font-weight: bold;">-9.4 kcal/mol</span> | Toxicity Risk: <span id="res-toxicity">LOW</span></div>
+                  <div style="font-size: 0.9rem; color: var(--secondary-teal);">Binding Affinity: <span id="res-affinity" style="color: var(--secondary-teal); font-weight: bold;">-9.4 kcal/mol</span> | Toxicity Risk: <span id="res-toxicity" style="color: var(--secondary-teal);">LOW</span></div>
               </div>
           </div>
       </div>
@@ -134,7 +141,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
                     <h3 style="margin:0;">DRUG-DISEASE COMPATIBILITY ANALYSIS</h3>
                     <button id="btn-download-report" class="btn-submit" style="padding: 5px 15px; font-size: 0.7rem; background: var(--glass); border: 1px solid var(--neon-blue); color: var(--neon-blue);">DOWNLOAD PDF REPORT [RAW]</button>
                   </div>
-              <div id="compatibility-result" style="padding: 1.5rem; text-align: center; color: #888;">
+              <div id="compatibility-result" style="padding: 1.5rem; text-align: center; color: var(--secondary-teal);">
                   <div style="font-size: 0.9rem;">Run prediction model to analyze drug compatibility with patient's disease</div>
               </div>
           </div>
@@ -853,7 +860,13 @@ if (submitBtn) {
 
     tl.to('.page-analysis', {
       opacity: 1,
-      duration: 0.5
+      duration: 0.5,
+      onComplete: () => {
+        const gp = document.getElementById('graph-placeholder') as HTMLElement | null;
+        if (gp) {
+          gp.style.display = 'none';
+        }
+      }
     });
 
     tl.from('.analysis-container .panel', {
@@ -1141,16 +1154,16 @@ if (predictBtn) {
         compatibilityContainer.innerHTML = `
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; text-align: left;">
                 <div>
-                  <div style="font-size: 1.3rem; color: ${statusColor}; margin-bottom: 1rem; font-weight: bold;">
-                    ${statusIcon} ${match.status}
+                  <div style="font-size: 1.3rem; color: ${statusColor}; margin-bottom: 1rem; font-weight: bold; text-shadow: 0 0 8px ${statusColor};">
+                    ${isSupported ? '✓ COMPATIBLE (VERIFIED)' : statusIcon + ' ' + match.status}
                   </div>
                   <div style="margin-bottom: 1rem;">
-                    <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem;">DISEASE:</div>
+                    <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 700;">DISEASE:</div>
                     <div style="color: white; font-size: 1rem;">${match.disease.toUpperCase()}</div>
                   </div>
                   <div style="margin-bottom: 1rem;">
-                    <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem;">CONFIDENCE SCORE:</div>
-                    <div style="color: ${statusColor}; font-size: 1.5rem; font-weight: bold;">${match.confidence_score}</div>
+                    <div style="color: ${statusColor}; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 800; text-shadow: 0 0 6px ${statusColor};">CONFIDENCE SCORE:</div>
+                    <div style="color: ${statusColor}; font-size: 1.5rem; font-weight: 800; text-shadow: 0 0 10px ${statusColor};">${match.confidence_score}</div>
                   </div>
                   <div style="margin-bottom: 1.5rem;">
                     <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem;">DEPARTMENT:</div>
@@ -1160,15 +1173,15 @@ if (predictBtn) {
                 <div>
                   <div style="margin-bottom: 1.5rem;">
                     <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem;">MECHANISM OF ACTION:</div>
-                    <div style="color: var(--neon-pink); font-size: 0.95rem; line-height: 1.4;">${match.mechanism}</div>
+                    <div style="color: var(--neon-pink); font-size: 0.95rem; line-height: 1.4; font-weight: 800;">${match.mechanism}</div>
                   </div>
                   <div style="margin-bottom: 1.5rem;">
-                    <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem;">CLINICAL EVIDENCE:</div>
-                    <div style="color: #5a2323ff; font-size: 0.9rem; line-height: 1.4; border-left: 2px solid var(--neon-blue); padding-left: 10px;">${match.clinical_evidence}</div>
+                    <div style="color: var(--neon-blue); font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 800;">CLINICAL EVIDENCE:</div>
+                    <div style="color: #5a2323ff; font-size: 0.9rem; line-height: 1.4; border-left: 2px solid var(--neon-blue); padding-left: 10px; font-weight: 800;">${match.clinical_evidence}</div>
                   </div>
                    <div style="margin-bottom: 1.5rem;">
                     <div style="color: var(--neon-green); font-size: 0.85rem; margin-bottom: 0.3rem;">RECOMMENDATION:</div>
-                    <div style="color: var(--neon-green); font-size: 1rem; line-height: 1.4; font-weight: bold; padding: 10px; background: rgba(186, 220, 88, 0.1); border: 1px solid var(--neon-green); border-radius: 8px;">
+                    <div style="color: #ffffff; font-size: 1rem; line-height: 1.4; font-weight: 800; padding: 10px; background: var(--secondary-teal); border: 2px solid var(--primary-teal); border-radius: 8px;">
                         ${match.recommendation}
                     </div>
                   </div>
@@ -1476,3 +1489,103 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
     window.addEventListener('mousedown', () => curzr?.click());
   }
 }
+
+let asr: { recognition: any; active: boolean } = { recognition: null, active: false };
+function initASR() {
+  const SR: any = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  if (!SR) return;
+  const rec = new SR();
+  rec.lang = 'en-US';
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.onresult = (e: any) => {
+    let t = '';
+    for (let i = 0; i < e.results.length; i++) {
+      t += e.results[i][0].transcript + ' ';
+    }
+    handleTranscript(t);
+  };
+  rec.onend = () => {
+    asr.active = false;
+  };
+  asr.recognition = rec;
+}
+function toggleASR() {
+  if (!asr.recognition) return;
+  if (asr.active) {
+    asr.recognition.stop();
+    asr.active = false;
+    addLog('Voice capture stopped');
+  } else {
+    asr.recognition.start();
+    asr.active = true;
+    addLog('Voice capture started');
+  }
+}
+function handleTranscript(t: string) {
+  const nameEl = document.getElementById('p-name') as HTMLInputElement | null;
+  const diseaseEl = document.getElementById('p-disease') as HTMLInputElement | null;
+  const ageEl = document.getElementById('p-age') as HTMLInputElement | null;
+  const bloodEl = document.getElementById('p-blood') as HTMLInputElement | null;
+  const notesEl = document.getElementById('p-diagnosis') as HTMLTextAreaElement | null;
+  const lower = t.toLowerCase();
+  const nameMatch = t.match(/name is ([A-Za-z\s]+)/i) || t.match(/patient\s+([A-Za-z\s]+)/i);
+  if (nameMatch && nameEl) {
+    nameEl.value = nameMatch[1].trim();
+  }
+  // Age / Gender
+  let age: string | null = null;
+  const ageMatch = lower.match(/age\s+(\d{1,3})/) || lower.match(/(\d{1,3})\s*(years|year)\b/);
+  if (ageMatch) {
+    age = ageMatch[1];
+  }
+  let gender: string | null = null;
+  if (lower.match(/\bmale\b|\bman\b/)) gender = "Male";
+  if (lower.match(/\bfemale\b|\bwoman\b/)) gender = "Female";
+  if (ageEl && (age || gender)) {
+    const prev = ageEl.value.trim();
+    const next = ((age ? age : "").trim() + (gender ? (" / " + gender) : "")).trim();
+    ageEl.value = next || prev;
+  }
+  // Blood Group
+  const bgMatch = lower.match(/\b(a|b|ab|o)\s?([+-]|positive|negative)\b/);
+  if (bgMatch && bloodEl) {
+    const grp = bgMatch[1].toUpperCase();
+    const sign = bgMatch[2];
+    const signNorm = (sign === 'positive' ? '+' : (sign === 'negative' ? '-' : sign));
+    bloodEl.value = `${grp}${signNorm}`;
+  }
+  let diseaseDetected: string | null = null;
+  const explicitMatch = lower.match(/disease is ([a-z\s]+)/i) || lower.match(/diagnosis ([a-z\s]+)/i);
+  if (explicitMatch) {
+    diseaseDetected = explicitMatch[1].trim();
+  } else {
+    const known = ['hypertension', 'high blood pressure', 'lung cancer', 'breast cancer', 'glioblastoma', 'diabetes', 'type 2 diabetes', 'nsclc'];
+    for (const k of known) {
+      if (lower.includes(k)) {
+        diseaseDetected = k;
+        break;
+      }
+    }
+  }
+  if (diseaseEl && diseaseDetected) {
+    diseaseEl.value = diseaseDetected;
+  }
+  // Notes capture (append if present)
+  const notesMatch = t.match(/notes?\s*[:\-]\s*(.+)$/i) || t.match(/assessment\s*[:\-]\s*(.+)$/i);
+  if (notesEl && notesMatch) {
+    const prev = notesEl.value.trim();
+    const add = notesMatch[1].trim();
+    notesEl.value = prev ? (prev + "\n" + add) : add;
+  }
+}
+initASR();
+// Voice button click
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement;
+  if (!target) return;
+  const button = target.id === 'voice-all-btn' ? target : target.closest('#voice-all-btn');
+  if (button) {
+    toggleASR();
+  }
+});

@@ -15,7 +15,7 @@
   --border-color: rgba(90, 197, 200, 0.3);
 
   --text-main: #04353D;
-  --text-muted: #2f3640;
+  --text-muted: #04353D;
   --glass-border: rgba(255, 255, 255, 0.8);
 }
 
@@ -179,7 +179,7 @@ body {
   background: rgba(186, 220, 88, 0.15);
   /* Light Green BG */
   border: 1px solid var(--neon-green);
-  color: var(--text-main);
+  color: var(--secondary-teal);
   padding: 8px;
   font-family: 'Rajdhani';
   outline: none;
@@ -398,6 +398,27 @@ input:focus {
   padding: 2rem;
   box-sizing: border-box;
   background: transparent;
+}
+
+/* Voice button for ASR */
+.voice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--secondary-teal);
+  background: var(--secondary-teal);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(4, 53, 61, 0.3);
+  cursor: pointer;
+}
+.voice-btn:hover {
+  background: var(--primary-teal);
+  border-color: var(--primary-teal);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(90, 197, 200, 0.35);
 }
 
 .dashboard-header {

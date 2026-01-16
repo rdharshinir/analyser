@@ -28,6 +28,17 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def normalize_disease_input(s):
+    if any(x in s for x in ["htn", "hypertention", "hypertension", "high blood pressure", "bp high"]):
+        return "hypertension"
+    if any(x in s for x in ["nsclc", "non small", "non-small cell lung", "lung adenocarcinoma"]):
+        return "non-small cell lung cancer"
+    if any(x in s for x in ["gbm", "glioblast"]):
+        return "glioblastoma"
+    if any(x in s for x in ["type 2 diabetes", "t2d", "diabetes type 2"]):
+        return "diabetes type 2"
+    return s
+
 @app.route('/health', methods=['GET'])
 def health_check():
     """Health check endpoint"""
@@ -57,7 +68,9 @@ def analyze_genome():
         logger.info(f"Received genome file: {file_path}")
 
         # Check for disease context override (Expert System Layer)
-        disease_input = request.form.get('disease', '').lower().strip()
+        raw_disease = request.form.get('disease', '').lower().strip()
+        disease_input = normalize_disease_input(raw_disease)
+        logger.info(f"Disease input normalized: {raw_disease} -> {disease_input}")
         
         for disease_key, info in MEDICAL_KNOWLEDGE_BASE.items():
             if disease_key in disease_input or disease_input in disease_key:
@@ -195,7 +208,9 @@ def analyze_compatibility():
         logger.info(f"Received High-Precision Compatibility Analysis request: {data}")
         
         drug_name = data.get('drug_name', 'Unknown').strip()
-        disease_input = data.get('disease', '').lower().strip()
+        raw_disease = data.get('disease', '').lower().strip()
+        disease_input = normalize_disease_input(raw_disease)
+        logger.info(f"Disease input normalized: {raw_disease} -> {disease_input}")
         patient_data = data.get('patient_data', {})
         
         # Initialize defaults

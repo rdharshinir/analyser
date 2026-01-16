@@ -13,12 +13,15 @@ from sklearn.preprocessing import StandardScaler
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.normpath(os.path.join(BASE_DIR, "..", "data"))
 # Constants
 MODEL_FILE = "xgb_genomic_model.json"
 FEATURES_FILE = "model_features.json"
-DATA_CCLE = "CCLE_expression.csv"
-DATA_DRUG = "GDSC2_fitted_dose_response_27Oct23.xlsx"
-DATA_META = "sample_info.csv"
+DATA_CCLE = os.path.join(DATA_DIR, "CCLE_expression.csv")
+DATA_DRUG = os.path.join(DATA_DIR, "GDSC2_fitted_dose_response_27Oct23.xlsx")
+DATA_META = os.path.join(DATA_DIR, "sample_info.csv")
 
 # Global Objects
 model = None
