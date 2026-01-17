@@ -388,6 +388,32 @@ input:focus {
   color: #b2bec3;
 }
 
+.voice-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--primary-teal);
+  background: var(--secondary-teal);
+  color: #ffffff;
+  box-shadow: 0 6px 18px rgba(4, 53, 61, 0.35);
+  cursor: pointer;
+}
+.voice-btn:hover {
+  background: var(--primary-teal);
+  border-color: var(--primary-teal);
+  color: #ffffff;
+  box-shadow: 0 8px 22px rgba(90, 197, 200, 0.4);
+}
+.voice-btn.active {
+  background: linear-gradient(135deg, rgba(90,197,200,0.95), rgba(90,197,200,0.8));
+  border-color: var(--neon-green);
+  box-shadow: 0 0 12px rgba(186, 220, 88, 0.55), 0 0 24px rgba(90, 197, 200, 0.4);
+  color: #04353D;
+}
+
 .page-dashboard {
   position: absolute;
   width: 100%;

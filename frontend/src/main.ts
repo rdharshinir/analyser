@@ -77,6 +77,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
           <h2 style="font-family: 'Orbitron'; color: var(--primary-teal); font-size: 1.2rem; letter-spacing: 8px; margin-top: 0; border-bottom: 2px solid var(--primary-teal); padding-bottom: 10px; display: inline-block;">VISUALIZER</h2>
         </div>
         <h3 style="color:var(--secondary-teal); font-family: 'Orbitron';">PATIENT REPORT ENTRY</h3>
+         <div style="display:flex; justify-content:flex-end; margin: 0.5rem 0 0.5rem 0;">
+           <button id="voice-all-btn" class="voice-btn" aria-label="Voice input for all fields" title="Voice input">
+             <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+               <path fill="currentColor" d="M12 14a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.92V21h2v-3.08A7 7 0 0 0 19 11h-2z"/>
+             </svg>
+           </button>
+         </div>
          <div class="report-form-container">
             <input type="text" class="report-input" placeholder="PATIENT NAME" id="p-name" aria-label="Patient Name" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
             <input type="text" class="report-input" placeholder="AGE / GENDER" id="p-age" aria-label="Age and Gender" style="background: rgba(90, 197, 200, 0.05); border-color: var(--primary-teal);">
@@ -1168,7 +1175,7 @@ if (predictBtn) {
                   </div>
                    <div style="margin-bottom: 1.5rem;">
                     <div style="color: var(--neon-green); font-size: 0.85rem; margin-bottom: 0.3rem;">RECOMMENDATION:</div>
-                    <div style="color: var(--neon-green); font-size: 1rem; line-height: 1.4; font-weight: bold; padding: 10px; background: rgba(186, 220, 88, 0.1); border: 1px solid var(--neon-green); border-radius: 8px;">
+                    <div style="color: var(--neon-green); font-size: 1rem; line-height: 1.4; font-weight: 800; padding: 10px; background: linear-gradient(135deg, rgba(4,53,61,0.9), rgba(4,53,61,0.7)); border: 1px solid var(--primary-teal); border-radius: 8px; box-shadow: 0 0 12px rgba(90, 197, 200, 0.25);">
                         ${match.recommendation}
                     </div>
                   </div>
@@ -1476,3 +1483,15 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
     window.addEventListener('mousedown', () => curzr?.click());
   }
 }
+
+// Voice button click: toggle active visual state and log action
+document.addEventListener('click', (e) => {
+  const target = e.target as HTMLElement;
+  if (!target) return;
+  const button = target.id === 'voice-all-btn' ? target : target.closest('#voice-all-btn');
+  if (button) {
+    button.classList.toggle('active');
+    const isActive = button.classList.contains('active');
+    addLog(isActive ? 'Voice capture started' : 'Voice capture stopped');
+  }
+});
